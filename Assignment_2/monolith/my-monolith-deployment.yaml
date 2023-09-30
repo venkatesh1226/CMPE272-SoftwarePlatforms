@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-monolith-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-monolith
+  template:
+    metadata:
+      labels:
+        app: my-monolith
+    spec:
+      containers:
+        - name: my-monolith-container
+          image: my-monolith-image:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-monolith-service
+spec:
+  selector:
+    app: my-monolith
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000 # Assuming your app runs on port 5000 inside the container
+  type: NodePort
